@@ -15,7 +15,6 @@ services:
       - REDIS_PASSWORD=${REDIS_PASSWORD}
       - REDIS_PORT=${REDIS_PORT}
     depends_on:
-      - app
       - cache
       - db
       - composer

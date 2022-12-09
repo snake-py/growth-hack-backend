@@ -60,7 +60,6 @@ services:
       - ./:/var/www/html
       - ./nginx/default.conf:/etc/nginx/conf.d/default.temp
     depends_on:
-      - app
       - composer
       - db
       - cache
@@ -82,7 +81,6 @@ services:
     ports:
       - 9000
     depends_on:
-      - app
       - composer
       - db
       - cache

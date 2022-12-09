@@ -10,7 +10,7 @@ class RawEvent extends Model
     use HasFactory;
 
     protected $fillable = [
-        'host_name',
+        'origin',
         'event_name',
         'data',
     ];

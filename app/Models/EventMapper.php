@@ -12,6 +12,7 @@ class EventMapper extends Model
     protected $fillable = [
         'host_id',
         'event_name',
+        'table_name',
         'map'
     ];
 }

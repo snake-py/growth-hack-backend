@@ -1,0 +1,35 @@
+name: deployment
+on: [push]
+
+env:
+  SSH_USERNAME: ${{ secrets.SSH_USERNAME }}
+  SSH_HOST: ${{ secrets.SSH_HOST }}
+  SSH_PASSWORD: ${{ secrets.SSH_PASSWORD }}
+  VERSION: ${{ github.sha }}
+
+jobs:
+  test:
+    runs-on: ubuntu-20.04
+    container: snakepy/laravel-dev-image:php8.1-1df0d5dc1278855189227f766c49569395c83e56
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install dependencies
+        run: composer install --no-interaction --no-progress --no-suggest --no-scripts --prefer-dist
+      - name: Run tests
+        run: php artisan test
+  deployment:
+    runs-on: ubuntu-20.04
+    needs: test
+    steps:
+      - uses: actions/checkout@v2
+      - name: Deploy
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ env.SSH_HOST }}
+          username: ${{ env.SSH_USERNAME }}
+          password: ${{ env.SSH_PASSWORD }}
+          script: |
+            cd /home/fabio/growth-hack-backend
+            git pull
+            npm run build
+            docker compose up -d --build

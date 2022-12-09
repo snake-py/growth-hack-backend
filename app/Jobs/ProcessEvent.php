@@ -14,6 +14,8 @@ class ProcessEvent implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
+    protected $event;
+
     /**
      * Create a new job instance.
      *

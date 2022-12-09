@@ -1,0 +1,7 @@
+FROM php:8.1-fpm
+
+RUN pecl install xdebug-3.1.5 
+
+RUN docker-php-ext-install mysqli pdo pdo_mysql
+
+COPY .docker/xdebug-nginx.ini /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini

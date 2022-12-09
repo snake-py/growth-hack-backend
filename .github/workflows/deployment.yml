@@ -20,6 +20,10 @@ jobs:
         run: composer install --no-interaction --no-progress --no-suggest --no-scripts --prefer-dist
       - name: Install npm dependencies
         run: npm install
+      - name: set up application
+        run: cp .env.testing .env
+          php artisan key:generate
+          php artisan migrate
       - name: Run tests
         run: php artisan test
   deployment:

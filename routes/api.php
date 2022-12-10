@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\EventController;
+use App\Http\Controllers\SiteController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -19,5 +20,11 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::group(['prefix' => 'v1'], function () {
+    Route::middleware('auth:sanctum')->group(function () {
+        Route::apiResource('sites', SiteController::class);
+        Route::get('sites', [SiteController::class, 'apiIndex']);
+    });
+});
 
 Route::post('/event', [EventController::class, 'store']);

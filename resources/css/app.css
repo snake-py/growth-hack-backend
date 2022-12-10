@@ -1,3 +1,19 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+::selection {
+    @apply bg-accent;
+    @apply text-basicwhite;
+}
+
+html,
+body {
+    width: 100%;
+    height: 100%;
+}
+
+body {
+    @apply bg-background;
+    @apply text-bodytext;
+}

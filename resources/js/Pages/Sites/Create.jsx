@@ -7,11 +7,11 @@ export default function Edit({ auth, mustVerifyEmail, status }) {
             auth={auth}
             header={
                 <h2 className="font-semibold text-xl text-gray-800 leading-tight">
-                    Sites
+                    Create
                 </h2>
             }
         >
-            <Head title="Sites" />
+            <Head title="Create" />
 
             <div className="py-12"></div>
         </AuthenticatedLayout>

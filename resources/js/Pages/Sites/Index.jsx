@@ -1,5 +1,5 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { Head } from "@inertiajs/inertia-react";
+import { Head, Link } from "@inertiajs/inertia-react";
 
 export default function Edit({ auth, mustVerifyEmail, status }) {
     return (
@@ -13,7 +13,9 @@ export default function Edit({ auth, mustVerifyEmail, status }) {
         >
             <Head title="Sites" />
 
-            <div className="py-12"></div>
+            <div className="py-12">
+                <Link href={route("sites.create")}>Create site</Link>
+            </div>
         </AuthenticatedLayout>
     );
 }

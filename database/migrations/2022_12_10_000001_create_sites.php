@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('sites', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained();
+            $table->string('title');
             $table->text('url');
             $table->boolean('allow_subdomains')->default(false);
             $table->text('database_name');

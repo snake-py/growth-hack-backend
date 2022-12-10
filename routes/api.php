@@ -1,8 +1,8 @@
 <?php
 
+use App\Http\Controllers\Auth\ApiTokenController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\SiteController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,9 +16,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+Route::post('token', [ApiTokenController::class, 'generateToken']);
 
 Route::group(['prefix' => 'v1'], function () {
     Route::middleware('auth:sanctum')->group(function () {

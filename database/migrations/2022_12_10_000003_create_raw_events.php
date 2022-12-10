@@ -13,13 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('event_mappers', function (Blueprint $table) {
+        Schema::create('raw_events', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('host_id');
             $table->string('event_name');
-            $table->string('table_name');
-            $table->json('map');
-            $table->foreign('host_id')->references('id')->on('hosts');
+            $table->string('origin');
+            $table->json('data');
+            $table->foreignId('processed_event_id')->nullable()->constrained();
+            $table->foreignId('site_id')->nullable()->constrained();
             $table->timestamps();
         });
     }
@@ -31,6 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('event_mappers');
+        Schema::dropIfExists('raw_events');
     }
 };

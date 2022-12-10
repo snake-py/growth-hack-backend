@@ -13,13 +13,14 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('hosts', function (Blueprint $table) {
+        Schema::create('goals', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id');
-            $table->string('url');
-            $table->boolean('allow_subdomains');
+            $table->foreignId('site_id')->constrained();
+            $table->string('title');
+            $table->string('main_event');
+            $table->json('positive_related_events');
+            $table->json('negative_related_events');
             $table->timestamps();
-            $table->foreign('user_id')->references('id')->on('users');
         });
     }
 
@@ -30,6 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('hosts');
+        Schema::dropIfExists('goals');
     }
 };

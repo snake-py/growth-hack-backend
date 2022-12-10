@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateSiteRequest;
 use App\Models\Site;
-use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class SiteController extends Controller
@@ -53,7 +52,9 @@ class SiteController extends Controller
      */
     public function store(CreateSiteRequest $request)
     {
-        $site = Site::create($request->validated());
+        $validated = $request->validated();
+        $validated['user_id'] = auth()->id();
+        $site = Site::create($validated);
         return $site;
     }
 

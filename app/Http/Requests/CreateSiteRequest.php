@@ -6,15 +6,7 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class CreateSiteRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     *
-     * @return bool
-     */
-    public function authorize()
-    {
-        return false;
-    }
+
 
     /**
      * Get the validation rules that apply to the request.
@@ -24,7 +16,14 @@ class CreateSiteRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'title' => 'required|string:255',
+            'url' => 'required|string',
+            'allow_subdomains' => 'required|boolean',
+            'database_name' => 'required|string',
+            'database_user' => 'required|string',
+            'database_password' => 'required|string',
+            'database_host' => 'required|string',
+            'database_port' => 'required|string',
         ];
     }
 }

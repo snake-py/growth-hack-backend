@@ -95,7 +95,7 @@ class GoalController extends Controller
 
     private function getInformationForEvent($eventName, $site)
     {
-        return RawEvent::where('event_name', $eventName)->where('origin', $site->url)->get();
+        return RawEvent::where('event_name', $eventName)->where('origin', $site->url)->orderBy('created_at', 'desc')->get();
     }
 
     public function getGoal(string $site_title, int $goal_id)

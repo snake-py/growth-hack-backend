@@ -106,7 +106,7 @@ class SiteController extends Controller
         return $site;
     }
 
-   
+
     public function show(int|string $id)
     {
         if (is_string($id)) {

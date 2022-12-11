@@ -9,11 +9,13 @@ import { ArrowLeftIcon, PlusIcon } from "@radix-ui/react-icons";
 import { useEffect, useState } from "react";
 import SingleDataCard from "@/Components/SingleDataCard";
 import PlotDataCard from "@/Components/PlotDataCard";
+import Line from "@/Components/Plots/Line";
 // import Line from "@/Components/Plots/Line";
 
 export default function ({ auth, site, goal, eventData }) {
     console.log(eventData);
     console.log(goal);
+    const [timeFrame, setTimeFrame] = useState("day");
     const calculateTotal = (eventTypes) => {
         let sum = 0;
         eventTypes.forEach((events) => {
@@ -21,16 +23,39 @@ export default function ({ auth, site, goal, eventData }) {
         });
         return sum;
     };
-    const prepareDataForLineGraph = (label, events) => {
-        // events.map((event) => {
-        //     return {
-        //         primary: event.created_at,
-        //         secondary: event,
-        //     };
-        // {
-        //     label: "Main Event",
-        // }
+    const prepareDataForLineGraph = (events) => {
+        const groupedEvents = groupEventsForTheSameTimeFrame(events.mainEvent);
+        const mainEventSeries = {
+            label: "Main Event - " + events.mainEvent[0]?.event_name,
+            data: Object.keys(groupedEvents).map((key) => ({
+                primary: key,
+                secondary: groupedEvents[key].length,
+            })),
+        };
+        console.log(mainEventSeries);
+        return [mainEventSeries];
     };
+
+    const groupEventsForTheSameTimeFrame = (events) => {
+        const groupedEvents = {};
+        events.forEach((event) => {
+            const date = new Date(event.created_at);
+            const key =
+                date.getFullYear() +
+                "/" +
+                (date.getMonth() + 1) +
+                "/" +
+                date.getDate();
+            if (!groupedEvents[key]) {
+                groupedEvents[key] = [];
+            }
+            console.log(key);
+            groupedEvents[key].push(event);
+        });
+        return groupedEvents;
+    };
+    prepareDataForLineGraph(eventData);
+
     return (
         <AuthenticatedLayout
             auth={auth}
@@ -110,7 +135,11 @@ export default function ({ auth, site, goal, eventData }) {
                             )}
                         />
                     </div>
-                    <PlotDataCard title={"test"}>{/* <Line /> */}</PlotDataCard>
+                    <PlotDataCard title={"test"}>
+                        <div className="full-width heigh-[300px]">
+                            {<Line data={prepareDataForLineGraph(eventData)} />}
+                        </div>
+                    </PlotDataCard>
                 </div>
             </div>
         </AuthenticatedLayout>

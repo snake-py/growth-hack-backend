@@ -232,23 +232,18 @@ class ProcessEventService
     }
 
 
-    protected function getPDOType($value)
+    protected function getPDOType($type)
     {
-        $type = gettype($value);
         switch ($type) {
-            case 'integer':
+            case 'integer' || 'bigint' || 'int' || 'tinyint' || 'smallint' || 'mediumint':
                 return PDO::PARAM_INT;
-            case 'string':
+            case 'string' || 'varchar' || 'text' || 'longtext' || 'mediumtext' || 'tinytext' || 'char' || 'enum' || 'set':
                 return PDO::PARAM_STR;
-            case 'double':
+            case 'double' || 'float' || 'decimal' || 'numeric' || 'real':
                 return PDO::PARAM_STR;
-            case 'boolean':
+            case 'boolean' || 'bool':
                 return PDO::PARAM_BOOL;
-            case 'array':
-                return PDO::PARAM_STR;
-            case 'object':
-                return PDO::PARAM_STR;
-            case 'NULL':
+            case 'NULL' || 'null' || null:
                 return PDO::PARAM_NULL;
             default:
                 return PDO::PARAM_STR;

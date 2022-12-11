@@ -6,6 +6,7 @@ use App\Http\Requests\CreateSiteRequest;
 use App\Models\RawEvent;
 use App\Models\Site;
 use App\Services\QueryEvents;
+use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
 
 use function Psy\debug;
@@ -44,13 +45,22 @@ class SiteController extends Controller
     {
         $startDate = request()->query('startDate');
         $endDate = request()->query('endDate');
+        $site = $this->show($id);
         return Inertia::render('Sites/Details/Index', [
-            'site' => $this->show($id),
-            'events' => [
-                // 'event_name_1' => []
-                // 'event_name_2' => []
-            ]
+            'site' => $site,
+            'events' => $this->getGroupedRawEvents($site->id, $startDate, $endDate),
         ]);
+    }
+
+    public function getGroupedRawEvents($id, $startDate = null, $endDate = null)
+    {
+        $startDate = $startDate ?? now()->subDays(30)->toDateTimeString();
+        $endDate = $endDate ?? now()->toDateTimeString();
+        return RawEvent::where('site_id', $id)
+            ->where('created_at', '>=', $startDate)
+            ->where('created_at', '<=', $endDate)
+            ->orderBy('created_at', 'DESC')
+            ->get();
     }
 
     public function detailsEvents(int|string $id)

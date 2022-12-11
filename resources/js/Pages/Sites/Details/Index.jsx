@@ -2,8 +2,9 @@ import SecondaryButton from "@/Components/SecondaryButton";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, Link } from "@inertiajs/inertia-react";
 
-export default function Detail({ auth, site }) {
+export default function Detail({ auth, site, events }) {
     console.log(site);
+    console.log(events);
     return (
         <AuthenticatedLayout
             auth={auth}

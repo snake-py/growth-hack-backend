@@ -47,11 +47,7 @@ const prepareData = (events) => {
         });
     }
 
-    console.log(orderedData);
-
     orderedData.sort((a, b) => b.data - a.data);
-
-    console.log(orderedData);
 
     return {
         labels: orderedData.map((item) => item.label),

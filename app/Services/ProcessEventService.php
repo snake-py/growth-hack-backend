@@ -58,6 +58,11 @@ class ProcessEventService
 
         $hasEventBeenProcessedBefore = $this->hasEventBeenProcessedBefore();
 
+        $success = $this->pingDB();
+        if (!$success) {
+            return $this->writeResponse('Database not found', 404);
+        }
+
         if (!$hasEventBeenProcessedBefore) {
             $this->firstTimeProcessingEvent();
         }
@@ -66,6 +71,16 @@ class ProcessEventService
             return $this->writeResponse('Event not found', 404);
         }
         return $this->writeResponse('Event processed successfully');
+    }
+
+    protected function pingDB()
+    {
+        try {
+            $this->getDBConnection()->query('SELECT 1');
+            return true;
+        } catch (\Exception $e) {
+            return false;
+        }
     }
 
     /**
@@ -220,7 +235,7 @@ class ProcessEventService
             return $this->connection;
         }
         $this->connection =  new PDO(
-            "mysql:host={$this->site->database_host};dbname={$this->site->database_name}",
+            "mysql:host={$this->site->database_host};dbname={$this->site->database_name}port={$this->site->database_port}",
             $this->site->database_user,
             $this->site->database_password
         );

@@ -27,3 +27,6 @@ Route::group(['prefix' => 'v1'], function () {
 
 Route::post('/event', [EventController::class, 'store']);
 Route::post('/testing/event', [EventController::class, 'storeTesting']);
+
+
+Route::get('test', [EventController::class, 'testDebugger']);

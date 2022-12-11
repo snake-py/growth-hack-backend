@@ -31,4 +31,9 @@ class EventController extends Controller
         $event->save();
         return ProcessEventService::staticProcess($event, 'test');
     }
+
+    public function testDebugger()
+    {
+        return 'test';
+    }
 }

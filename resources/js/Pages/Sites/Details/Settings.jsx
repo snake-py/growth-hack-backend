@@ -1,7 +1,7 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, Link } from "@inertiajs/inertia-react";
 
-export default function Settings({}) {
+export default function Settings({ auth, site }) {
     return (
         <>
             <AuthenticatedLayout
@@ -14,7 +14,7 @@ export default function Settings({}) {
                                     id: site.title,
                                 })}
                             >
-                                <button className="py-1 px-4 mb-3 bg-bodytext bg-opacity-30 rounded-md text-basicwhite">
+                                <button className="py-1 px-4 mb-3 text-bodytext">
                                     Overview
                                 </button>
                             </Link>
@@ -41,7 +41,7 @@ export default function Settings({}) {
                                     id: site.title,
                                 })}
                             >
-                                <button className="py-1 px-4 mb-3 text-bodytext">
+                                <button className="py-1 px-4 mb-3 bg-bodytext bg-opacity-30 rounded-md text-basicwhite">
                                     Settings
                                 </button>
                             </Link>

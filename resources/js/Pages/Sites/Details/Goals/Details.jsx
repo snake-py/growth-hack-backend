@@ -1,8 +1,3 @@
-import SecondaryButton from "@/Components/SecondaryButton";
-import InputError from "@/Components/InputError";
-import InputLabel from "@/Components/InputLabel";
-import PrimaryButton from "@/Components/PrimaryButton";
-import TextInput from "@/Components/TextInput";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, Link, useForm } from "@inertiajs/inertia-react";
 import { ArrowLeftIcon, PlusIcon } from "@radix-ui/react-icons";
@@ -216,11 +211,11 @@ export default function ({ auth, site, goal, eventData }) {
                             )}
                         />
                     </div>
-                    <PlotDataCard title={"test"}>
+                    {/* <PlotDataCard title={"test"}>
                         <div className="full-width heigh-[300px]">
                             <Line options={options} data={lineChartData} />
                         </div>
-                    </PlotDataCard>
+                    </PlotDataCard> */}
                 </div>
             </div>
         </AuthenticatedLayout>

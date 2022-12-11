@@ -9,12 +9,124 @@ import { ArrowLeftIcon, PlusIcon } from "@radix-ui/react-icons";
 import { useEffect, useState } from "react";
 import SingleDataCard from "@/Components/SingleDataCard";
 import PlotDataCard from "@/Components/PlotDataCard";
-import Line from "@/Components/Plots/Line";
-// import Line from "@/Components/Plots/Line";
+import {
+    Chart as ChartJS,
+    CategoryScale,
+    LinearScale,
+    PointElement,
+    LineElement,
+    Title,
+    Tooltip,
+    Legend,
+} from "chart.js";
+import { Line } from "react-chartjs-2";
+ChartJS.register(
+    CategoryScale,
+    LinearScale,
+    PointElement,
+    LineElement,
+    Title,
+    Tooltip,
+    Legend
+);
+
+const options = {
+    responsive: true,
+    plugins: {
+        legend: {
+            position: "top",
+        },
+        title: {
+            display: true,
+            text: "Chart.js Line Chart",
+        },
+    },
+};
+
+const prepareData = (eventSets) => {
+    const dataset = {
+        labels: [
+            "January",
+            "February",
+            "March",
+            "April",
+            "May",
+            "June",
+            "July",
+            "August",
+            "September",
+            "October",
+            "November",
+            "December",
+        ],
+        datasets: [],
+    };
+
+    Object.keys(eventSets).forEach((key) => {
+        const events = eventSets[key];
+        const values = [];
+
+        if (
+            key === "negativeRelatedEvents" ||
+            key === "positiveRelatedEvents"
+        ) {
+            events.forEach((event) => {
+                const groupedEvents = groupEventsForTheSameTimeFrame(event);
+                for (let i = 1; i <= 12; i++) {
+                    if (groupedEvents[i]) {
+                        if (values[i - 1] === undefined) {
+                            values.push(groupedEvents[i].length);
+                        } else {
+                            values[i - 1] += groupedEvents[i].length;
+                        }
+                    }
+                    if (!values[i - 1]) {
+                        values.push(0);
+                    }
+                }
+            });
+        } else {
+            const groupedEvents = groupEventsForTheSameTimeFrame(events);
+            for (let i = 1; i <= 12; i++) {
+                if (groupedEvents[i]) {
+                    values.push(groupedEvents[i].length);
+                }
+                values.push(0);
+            }
+        }
+
+        dataset.datasets.push({
+            label: events[0].event_name ?? key,
+            data: values,
+            fill: false,
+            borderColor: getColor(key),
+            tension: 0.1,
+        });
+    });
+    return dataset;
+};
+
+const getColor = (key) => {
+    if (key === "visitors") return "rgb(54, 162, 235)";
+    if (key === "mainEvent") return "rgb(0, 240, 120)";
+    if (key === "positiveRelatedEvents") return "rgb(255, 205, 86)";
+    if (key === "negativeRelatedEvents") return "rgb(255, 99, 132)";
+};
+
+const groupEventsForTheSameTimeFrame = (events) => {
+    const groupedEvents = {};
+    events.forEach((event) => {
+        const date = new Date(event.created_at);
+        const key = date.getMonth() + 1;
+        if (!groupedEvents[key]) {
+            groupedEvents[key] = [];
+        }
+        groupedEvents[key].push(event);
+    });
+    return groupedEvents;
+};
 
 export default function ({ auth, site, goal, eventData }) {
-    console.log(eventData);
-    console.log(goal);
     const [timeFrame, setTimeFrame] = useState("day");
     const calculateTotal = (eventTypes) => {
         let sum = 0;
@@ -23,38 +135,7 @@ export default function ({ auth, site, goal, eventData }) {
         });
         return sum;
     };
-    const prepareDataForLineGraph = (events) => {
-        const groupedEvents = groupEventsForTheSameTimeFrame(events.mainEvent);
-        const mainEventSeries = {
-            label: "Main Event - " + events.mainEvent[0]?.event_name,
-            data: Object.keys(groupedEvents).map((key) => ({
-                primary: key,
-                secondary: groupedEvents[key].length,
-            })),
-        };
-        console.log(mainEventSeries);
-        return [mainEventSeries];
-    };
-
-    const groupEventsForTheSameTimeFrame = (events) => {
-        const groupedEvents = {};
-        events.forEach((event) => {
-            const date = new Date(event.created_at);
-            const key =
-                date.getFullYear() +
-                "/" +
-                (date.getMonth() + 1) +
-                "/" +
-                date.getDate();
-            if (!groupedEvents[key]) {
-                groupedEvents[key] = [];
-            }
-            console.log(key);
-            groupedEvents[key].push(event);
-        });
-        return groupedEvents;
-    };
-    prepareDataForLineGraph(eventData);
+    const lineChartData = prepareData(eventData);
 
     return (
         <AuthenticatedLayout
@@ -137,7 +218,7 @@ export default function ({ auth, site, goal, eventData }) {
                     </div>
                     <PlotDataCard title={"test"}>
                         <div className="full-width heigh-[300px]">
-                            {<Line data={prepareDataForLineGraph(eventData)} />}
+                            <Line options={options} data={lineChartData} />
                         </div>
                     </PlotDataCard>
                 </div>

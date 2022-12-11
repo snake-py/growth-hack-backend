@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\GoalController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\SiteController;
@@ -33,6 +34,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/sites/{id}', [SiteController::class, 'details'])->name('sites.details.index');
     Route::get('/sites/{id}/events', [SiteController::class, 'detailsEvents'])->name('sites.details.events');
     Route::get('/sites/{id}/goals', [SiteController::class, 'detailsGoals'])->name('sites.details.goals');
+    Route::post('/sites/{id}/goals', [GoalController::class, 'create'])->name('sites.details.goals.create');
+
 
     // Route::put('/sites/{id}', [SiteController::class, 'update'])->name('sites.update');
     // Route::delete('/sites/{id}', [SiteController::class, 'destroy'])->name('sites.destroy');

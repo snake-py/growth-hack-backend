@@ -30,4 +30,9 @@ class Site extends Model
     {
         return $this->hasMany(Goal::class);
     }
+
+    public function rawEvents()
+    {
+        return $this->hasMany(RawEvent::class);
+    }
 }

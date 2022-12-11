@@ -2,7 +2,7 @@ import SecondaryButton from "@/Components/SecondaryButton";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, Link } from "@inertiajs/inertia-react";
 
-export default function Events({ auth, site }) {
+export default function Events({ auth, site, latestRawEvents }) {
     return (
         <AuthenticatedLayout
             auth={auth}
@@ -49,38 +49,71 @@ export default function Events({ auth, site }) {
             <div className="max-w-7xl mx-auto h-full py-16 flex flex-col space-y-8">
                 <h2 className="text-basicwhite">Live Event View</h2>
                 <div className="bg-background border border-border rounded-md p-8 relative">
-                    <div className="absolute w-full h-full top-0 left-0 right-0 bottom-0 bg-gradientoverlay backdrop-blur-[2px]">
-                        <div className="w-full h-full flex flex-col items-center justify-center">
-                            <h4 className="text-basicwhite">
-                                Start Tracking Events
-                            </h4>
+                    {latestRawEvents.length > 0 ?? (
+                        <div className="absolute w-full h-full top-0 left-0 right-0 bottom-0 bg-gradientoverlay backdrop-blur-[2px]">
+                            <div className="w-full h-full flex flex-col items-center justify-center">
+                                <h4 className="text-basicwhite">
+                                    Start Tracking Events
+                                </h4>
 
-                            <code className="whitespace-pre mt-4 p-4 border border-border bg-background rounded-md">
-                                curl -d example -X POST
-                                https://eventbuddy.com/api/v1/events
-                            </code>
+                                <code className="whitespace-pre mt-4 p-4 border border-border bg-background rounded-md">
+                                    curl -d example -X POST
+                                    https://eventbuddy.com/api/v1/events
+                                </code>
+                            </div>
                         </div>
-                    </div>
+                    )}
                     <div className="flex flex-col items-center space-y-4  overflow-scroll max-h-[340px]">
                         <table className="table-fixed w-full">
                             <thead>
                                 <tr className="border-b border-border">
-                                    <td className="pb-4">Event Type</td>
+                                    <td className="pb-4">Id</td>
                                     <td className="pb-4">Event Name</td>
                                     <td className="pb-4">Timestamp</td>
                                     <td className="pb-4">User</td>
                                 </tr>
                             </thead>
-                            <tbody>
-                                {Array.from({ length: 10 }).map((_, index) => (
-                                    <tr className="border-b border-border">
-                                        <td className="py-4">Event Type</td>
-                                        <td className="py-4">Event Name</td>
-                                        <td className="py-4">Timestamp</td>
-                                        <td className="py-4">User</td>
-                                    </tr>
-                                ))}
-                            </tbody>
+                            {latestRawEvents.length > 0 ? (
+                                <tbody>
+                                    {latestRawEvents.map((event, index) => (
+                                        <tr
+                                            key={event.id}
+                                            className="border-b border-border"
+                                        >
+                                            <td className="py-4">{event.id}</td>
+                                            <td className="py-4">
+                                                {event.event_name}
+                                            </td>
+                                            <td className="py-4">
+                                                {event.created_at}
+                                            </td>
+                                            <td className="py-4">
+                                                {event.user_agent ??
+                                                    "Not Found"}
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            ) : (
+                                <tbody>
+                                    {Array.from({ length: 10 }).map(
+                                        (_, index) => (
+                                            <tr className="border-b border-border">
+                                                <td className="py-4">
+                                                    Event Type
+                                                </td>
+                                                <td className="py-4">
+                                                    Event Name
+                                                </td>
+                                                <td className="py-4">
+                                                    Timestamp
+                                                </td>
+                                                <td className="py-4">User</td>
+                                            </tr>
+                                        )
+                                    )}
+                                </tbody>
+                            )}
                         </table>
                     </div>
                 </div>

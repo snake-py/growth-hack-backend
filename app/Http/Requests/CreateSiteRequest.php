@@ -22,7 +22,7 @@ class CreateSiteRequest extends FormRequest
             'database_user' => 'required|string',
             'database_password' => 'required|string',
             'database_host' => 'required|string',
-            'database_port' => 'required|string',
+            'database_port' => 'required|numeric',
         ];
     }
 }

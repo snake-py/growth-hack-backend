@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreateGoalRequest;
+use App\Models\Goal;
+use App\Models\Site;
 use Illuminate\Http\Request;
 
 class GoalController extends Controller
@@ -11,19 +14,18 @@ class GoalController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(int|string $site)
     {
-        //
+        $site = Site::where('user_id', auth()->id())->findOrFail($site);
+        $goals = $site->goals;
+        return response()->json($goals);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function create(CreateGoalRequest $request)
     {
-        //
+        $site = Site::where('user_id', auth()->id())->findOrFail($request->id);
+        $goal = $this->store($request, $site);
+        return redirect()->route('sites.details.goals', $site->title);
     }
 
     /**
@@ -32,10 +34,15 @@ class GoalController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CreateGoalRequest $request, $site)
     {
-        //
+        $validated = $request->validated();
+        $validated['user_id'] = auth()->id();
+        $validated['site_id'] = $site->id;
+        $goal = Goal::create($validated);
+        return $goal;
     }
+
 
     /**
      * Display the specified resource.

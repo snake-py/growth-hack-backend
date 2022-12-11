@@ -15,6 +15,7 @@ class Goal extends Model
         'positive_related_events',
         'negative_related_events',
         'site_id',
+        'description'
     ];
 
     protected $casts = [

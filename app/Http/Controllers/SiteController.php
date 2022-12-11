@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateSiteRequest;
+use App\Models\RawEvent;
 use App\Models\Site;
+use App\Services\QueryEvents;
 use Inertia\Inertia;
 
 use function Psy\debug;
@@ -47,15 +49,23 @@ class SiteController extends Controller
 
     public function detailsEvents(int|string $id)
     {
+        $site = $this->show($id);
+        $requestQueryParams = request()->query();
+        $order = $requestQueryParams['order'] ?? 'DESC';
+        $limit = $requestQueryParams['limit'] ?? 10;
+        $latestRawEvents = $site->rawEvents()->orderBy('id', $order)->limit($limit)->get();
         return Inertia::render('Sites/Details/Events', [
             'site' => $this->show($id),
+            'latestRawEvents' => $latestRawEvents,
         ]);
     }
 
     public function detailsGoals(int|string $id)
     {
+        $site = $this->show($id);
         return Inertia::render('Sites/Details/Goals', [
-            'site' => $this->show($id),
+            'site' => $site,
+            'goals' => $site->goals,
         ]);
     }
 

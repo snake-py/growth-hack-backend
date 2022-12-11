@@ -23,6 +23,9 @@ module.exports = {
                 'basicwhite': '#EDEDEF',
                 'accent': '#B57FE9'
 
+            },
+            backgroundImage: {
+                'gradientoverlay': 'linear-gradient(180deg, rgba(25, 25, 27, 0) 0%, #19191B 59%, #19191B 61.46%, rgba(25, 25, 27, 0) 100%);'
             }
         },
 

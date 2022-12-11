@@ -8,17 +8,69 @@ import { Head, Link, useForm } from "@inertiajs/inertia-react";
 import { ArrowLeftIcon, PlusIcon } from "@radix-ui/react-icons";
 import { useEffect } from "react";
 
+const InputFields = [
+    {
+        name: "url",
+        label: "Site URL",
+        type: "text",
+        placeholder: "my-site.com",
+    },
+    {
+        name: "database_host",
+        label: "Database Host",
+        type: "text",
+        placeholder: "localhost",
+    },
+    {
+        name: "database_port",
+        label: "Database Port",
+        type: "text",
+        placeholder: "3306",
+    },
+    {
+        name: "database_name",
+        label: "Database Name",
+        type: "text",
+        placeholder: "my_site_db",
+    },
+    {
+        name: "database_user",
+        label: "Database User",
+        type: "text",
+        placeholder: "root",
+    },
+    {
+        name: "database_password",
+        label: "Database Password",
+        type: "password",
+        placeholder: "super-secret-password",
+    },
+];
+
 export default function Edit({ auth, mustVerifyEmail, status }) {
     const { data, setData, post, processing, errors, reset } = useForm({
-        domainname: "",
-        subdomainname: "",
-        dbhostname: "",
-        dbpassword: "",
+        database_host: "",
+        database_port: "",
+        database_name: "",
+        database_user: "",
+        database_password: "",
+        title: "",
+        url: "",
+        allow_subdomains: true,
     });
 
     useEffect(() => {
         return () => {
-            reset("password", "password_confirmation");
+            reset(
+                "database_host",
+                "database_port",
+                "database_name",
+                "database_user",
+                "database_password",
+                "title",
+                "url",
+                "allow_subdomains"
+            );
         };
     }, []);
 
@@ -62,106 +114,53 @@ export default function Edit({ auth, mustVerifyEmail, status }) {
 
                 <div className="bg-background border border-border rounded-md p-8 mt-8">
                     <form onSubmit={submit}>
-                        <div className="grid grid-cols-2 gap-10 ">
-                            <div>
-                                <InputLabel
-                                    forInput="domainName"
-                                    value="Domain Name"
-                                />
+                        <InputLabel forInput="title" value="Site Title" />
+                        <TextInput
+                            id="title"
+                            name="title"
+                            value={data.title}
+                            placeholder={"my-cool-site"}
+                            className="mt-1 block w-full"
+                            handleChange={onHandleChange}
+                            required
+                        />
+                        <InputError message={errors.title} className="mt-2" />
+                        <div className="grid grid-cols-2 gap-10 mt-8">
+                            {InputFields.map((field) => (
+                                <div key={field.name}>
+                                    <InputLabel
+                                        forInput={field.name}
+                                        value={field.label}
+                                    />
 
-                                <TextInput
-                                    id="domainName"
-                                    name="domainname"
-                                    value={data.domainname}
-                                    className="mt-1 block w-full"
-                                    isFocused={true}
-                                    handleChange={onHandleChange}
-                                    required
-                                />
+                                    <TextInput
+                                        id={field.name}
+                                        name={field.name}
+                                        value={data[field.name]}
+                                        placeholder={field.placeholder}
+                                        type={field.type}
+                                        className="mt-1 block w-full"
+                                        handleChange={onHandleChange}
+                                        required
+                                    />
 
-                                <InputError
-                                    message={errors.domainname}
-                                    className="mt-2"
-                                />
-                            </div>
-
-                            <div>
-                                <InputLabel
-                                    forInput="subdomainName"
-                                    value="Subdomain Name"
-                                />
-
-                                <TextInput
-                                    id="subdomainName"
-                                    name="subdomainName"
-                                    value={data.subdomainName}
-                                    className="mt-1 block w-full"
-                                    isFocused={true}
-                                    handleChange={onHandleChange}
-                                    required
-                                />
-
-                                <InputError
-                                    message={errors.subdomainName}
-                                    className="mt-2"
-                                />
-                            </div>
-
-                            <div className="">
-                                <InputLabel
-                                    forInput="dbhostname"
-                                    value="Database Hostname"
-                                />
-
-                                <TextInput
-                                    id="dbhostname"
-                                    type="text"
-                                    name="dbhostname"
-                                    value={data.dbhostname}
-                                    className="mt-1 block w-full"
-                                    handleChange={onHandleChange}
-                                    required
-                                />
-
-                                <InputError
-                                    message={errors.dbhostname}
-                                    className="mt-2"
-                                />
-                            </div>
-
-                            <div className="">
-                                <InputLabel
-                                    forInput="dbpassword"
-                                    value="Database Password"
-                                />
-
-                                <TextInput
-                                    id="dbpassword"
-                                    type="password"
-                                    name="dbpassword"
-                                    autoComplete="off"
-                                    value={data.dbpassword}
-                                    className="mt-1 block w-full"
-                                    handleChange={onHandleChange}
-                                    required
-                                />
-
-                                <InputError
-                                    message={errors.dbpassword}
-                                    className="mt-2"
-                                />
-                            </div>
+                                    <InputError
+                                        message={errors[field.name]}
+                                        className="mt-2"
+                                    />
+                                </div>
+                            ))}
                         </div>
 
                         <div className="flex items-center justify-between mt-8">
                             <label className="flex items-center">
                                 <Checkbox
-                                    name="remember"
-                                    value={data.remember}
+                                    name="allow_subdomains"
+                                    value={data.allow_subdomains}
                                     handleChange={onHandleChange}
                                 />
                                 <span className="ml-2 text-sm text-bodytext">
-                                    Support Localhost?
+                                    Track Subdomains?
                                 </span>
                             </label>
                             <PrimaryButton

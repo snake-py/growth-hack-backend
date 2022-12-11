@@ -6,6 +6,8 @@ use App\Http\Requests\CreateSiteRequest;
 use App\Models\Site;
 use Inertia\Inertia;
 
+use function Psy\debug;
+
 class SiteController extends Controller
 {
     /**
@@ -61,7 +63,7 @@ class SiteController extends Controller
     public function create(CreateSiteRequest $request)
     {
         $site = $this->store($request);
-        return redirect()->route('sites.details.index', $site->id);
+        return redirect()->route('sites.details.index', $site->title);
     }
 
     /**
@@ -81,13 +83,13 @@ class SiteController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  string  $id
      * @return \Illuminate\Http\Response
      */
     public function show(int|string $id)
     {
         if (is_string($id)) {
-            return Site::where('user_id', auth()->id())->where('url', $id);
+            return Site::where('user_id', auth()->id())->where('title', $id)->get()->first();
         }
         return Site::where('user_id', auth()->id())->find($id);
     }

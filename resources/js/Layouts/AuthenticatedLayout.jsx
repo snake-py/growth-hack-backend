@@ -7,44 +7,31 @@ import { Link } from "@inertiajs/inertia-react";
 import PrimaryButton from "@/Components/PrimaryButton";
 import SecondaryButton from "@/Components/SecondaryButton";
 
-export default function Authenticated({ auth, noMenu, children }) {
-    // const [showingNavigationDropdown, setShowingNavigationDropdown] =
-    //     useState(false);
-
+export default function Authenticated({ auth, children, menu }) {
     return (
         <>
             <header className="bg-background sticky top-0  flex items-center border-b border-border">
                 <nav className="px-8 flex flex-col w-full">
                     <div className="flex justify-between items-center w-full py-4">
                         <div className="flex items-center space-x-4">
-                            <ApplicationLogo className="w-12 h-12" />
+                            <Link href="/">
+                                <ApplicationLogo className="w-12 h-12" />
+                            </Link>
                             <div className="h-px w-8 rotate-[-60deg] bg-border"></div>
                             <h4>{auth.user.email}</h4>
                         </div>
                         <div className="flex items-center space-x-4">
                             <Link href="/sites">Feedback</Link>
-                            <Link href="/sites">
+                            <Link
+                                as="span"
+                                method="post"
+                                href={route("logout")}
+                            >
                                 <SecondaryButton>Log out</SecondaryButton>
                             </Link>
                         </div>
                     </div>
-                    {!noMenu && (
-                        <div className="flex justify-start items-center w-full pt-8">
-                            <div className="flex items-center space-x-4">
-                                <Link href="/sites">
-                                    <button className="py-1 px-4 mb-3 bg-bodytext bg-opacity-30 rounded-md text-basicwhite">
-                                        Your Sites
-                                    </button>
-                                </Link>
-
-                                <Link href="/settings">
-                                    <button className="py-1 px-4 mb-3 text-bodytext">
-                                        Settings
-                                    </button>
-                                </Link>
-                            </div>
-                        </div>
-                    )}
+                    {menu}
                 </nav>
             </header>
             <main>{children}</main>

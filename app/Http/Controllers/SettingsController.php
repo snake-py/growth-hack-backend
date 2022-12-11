@@ -2,36 +2,36 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\ProfileUpdateRequest;
+use App\Http\Requests\SettingsUpdateRequest;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 
-class ProfileController extends Controller
+class SettingsController extends Controller
 {
     /**
-     * Display the user's profile form.
+     * Display the user's Settings form.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Inertia\Response
      */
     public function edit(Request $request)
     {
-        return Inertia::render('Profile/Edit', [
+        return Inertia::render('Settings/Edit', [
             'mustVerifyEmail' => $request->user() instanceof MustVerifyEmail,
             'status' => session('status'),
         ]);
     }
 
     /**
-     * Update the user's profile information.
+     * Update the user's Settings information.
      *
-     * @param  \App\Http\Requests\ProfileUpdateRequest  $request
+     * @param  \App\Http\Requests\SettingsUpdateRequest  $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(ProfileUpdateRequest $request)
+    public function update(SettingsUpdateRequest $request)
     {
         $request->user()->fill($request->validated());
 
@@ -41,7 +41,7 @@ class ProfileController extends Controller
 
         $request->user()->save();
 
-        return Redirect::route('profile.edit');
+        return Redirect::route('Settings.edit');
     }
 
     /**

@@ -45,70 +45,79 @@ export default function Login({ status, canResetPassword }) {
                     {status}
                 </div>
             )}
+            <div className="flex justify-center">
+                <div className="w-[300px] flex flex-col justify-center">
+                    <ApplicationLogo className="w-20 h-20 fill-current mx-auto pb-8" />
+                    <form onSubmit={submit}>
+                        <div>
+                            {/* <InputLabel forInput="email" value="Email" /> */}
 
-            <div className="w-[300px] flex flex-col justify-center">
-                <ApplicationLogo className="w-20 h-20 fill-current text-gray-500 mx-auto pb-8" />
-                <form onSubmit={submit}>
-                    <div>
-                        {/* <InputLabel forInput="email" value="Email" /> */}
+                            <TextInput
+                                placeholder="Email"
+                                id="email"
+                                type="email"
+                                name="email"
+                                value={data.email}
+                                className="mt-1 block w-full"
+                                autoComplete="username"
+                                isFocused={true}
+                                handleChange={onHandleChange}
+                            />
 
-                        <TextInput
-                            placeholder="Email"
-                            id="email"
-                            type="email"
-                            name="email"
-                            value={data.email}
-                            className="mt-1 block w-full"
-                            autoComplete="username"
-                            isFocused={true}
-                            handleChange={onHandleChange}
-                        />
-
-                        <InputError message={errors.email} className="mt-2" />
-                    </div>
-
-                    <div className="mt-4">
-                        {/* <InputLabel forInput="password" value="Password" /> */}
-
-                        <TextInput
-                            placeholder="Password"
-                            id="password"
-                            type="password"
-                            name="password"
-                            value={data.password}
-                            className="mt-1 block w-full"
-                            autoComplete="current-password"
-                            handleChange={onHandleChange}
-                        />
-
-                        <InputError
-                            message={errors.password}
-                            className="mt-2"
-                        />
-                    </div>
-
-                    <div className="flex items-center justify-between mt-4">
-                        <div className="block">
-                            <label className="flex items-center">
-                                <Checkbox
-                                    name="remember"
-                                    value={data.remember}
-                                    handleChange={onHandleChange}
-                                />
-                                <span className="ml-2 text-sm text-bodytext">
-                                    Remember me
-                                </span>
-                            </label>
+                            <InputError
+                                message={errors.email}
+                                className="mt-2"
+                            />
                         </div>
 
-                        <PrimaryButton
-                            className="ml-4 "
-                            processing={processing}
-                        >
-                            Log in
-                        </PrimaryButton>
-                    </div>
-                </form>
+                        <div className="mt-4">
+                            {/* <InputLabel forInput="password" value="Password" /> */}
+
+                            <TextInput
+                                placeholder="Password"
+                                id="password"
+                                type="password"
+                                name="password"
+                                value={data.password}
+                                className="mt-1 block w-full"
+                                autoComplete="current-password"
+                                handleChange={onHandleChange}
+                            />
+
+                            <InputError
+                                message={errors.password}
+                                className="mt-2"
+                            />
+                        </div>
+
+                        <div className="flex items-center justify-between mt-4">
+                            <div className="block">
+                                <label className="flex items-center">
+                                    <Checkbox
+                                        name="remember"
+                                        value={data.remember}
+                                        handleChange={onHandleChange}
+                                    />
+                                    <span className="ml-2 text-sm text-bodytext">
+                                        Remember me
+                                    </span>
+                                </label>
+                            </div>
+
+                            <PrimaryButton
+                                className="ml-4 "
+                                processing={processing}
+                            >
+                                Log in
+                            </PrimaryButton>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div className="absolute bottom-0 left-0 right-0 text-center py-8 bg-foreground border-t border-border">
+                <Link className="underline" href="/register">
+                    Dont have an account?
+                </Link>
             </div>
             {/* {canResetPassword && (
                         <Link

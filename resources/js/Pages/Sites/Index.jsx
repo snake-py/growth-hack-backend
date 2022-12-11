@@ -1,30 +1,55 @@
 import Checkbox from "@/Components/Checkbox";
+import PrimaryButton from "@/Components/PrimaryButton";
 import SecondaryButton from "@/Components/SecondaryButton";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, Link } from "@inertiajs/inertia-react";
-import { DotsVerticalIcon } from "@radix-ui/react-icons";
+import {
+    DotsVerticalIcon,
+    ExternalLinkIcon,
+    PlusIcon,
+} from "@radix-ui/react-icons";
 import { useState } from "react";
-
-// const siteList = [
-//     {
-//         id: 1,
-//         name: "nanogiants-test",
-//         url: "http://45.83.107.70/",
-//         totalGoalEvents: "22k+",
-//         goalId: "reach-slider-end",
-//         tracking: true,
-//     },
-// ];
 
 export default function Sites({ auth, sites }) {
     const siteList = sites;
     console.log(siteList);
     return (
-        <AuthenticatedLayout auth={auth}>
+        <AuthenticatedLayout
+            auth={auth}
+            menu={
+                <div className="flex justify-start items-center w-full pt-8">
+                    <div className="flex items-center space-x-4">
+                        <Link href="/sites">
+                            <button className="py-1 px-4 mb-3 bg-bodytext bg-opacity-30 rounded-md text-basicwhite">
+                                Your Sites
+                            </button>
+                        </Link>
+
+                        <Link href="/settings">
+                            <button className="py-1 px-4 mb-3 text-bodytext">
+                                Settings
+                            </button>
+                        </Link>
+                    </div>
+                </div>
+            }
+        >
             <Head title="Sites" />
             <div className="max-w-7xl mx-auto h-full py-16">
-                {siteList ? (
-                    <ul>
+                <div className="flex justify-between items-center mb-8">
+                    <h4>Sites: [{siteList.length}]</h4>
+
+                    <Link href={route("sites.new")}>
+                        <PrimaryButton>
+                            <div className="flex items-center space-x-2">
+                                <span>Add New Site</span>
+                                <PlusIcon className="w-4 h-4" />
+                            </div>
+                        </PrimaryButton>
+                    </Link>
+                </div>
+                {siteList.length > 0 ? (
+                    <ul className="grid gap-8">
                         {siteList.map((site) => (
                             <SiteCard key={site.id} site={site} />
                         ))}
@@ -54,24 +79,32 @@ export default function Sites({ auth, sites }) {
 const SiteCard = ({ site }) => {
     const [isTracking, setIsTracking] = useState(false);
     return (
-        <li
-            key={site.id}
-            className="bg-background border border-border rounded-md text-center p-8"
-        >
+        <li className="bg-background border border-border rounded-md text-center p-8">
             <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-4">
                     <div className="rounded-full h-10 w-10 bg-gray-50"></div>
                     <div className="flex flex-col items-start space-y-1">
-                        <h4 className="text-basicwhite">{site.name}</h4>
-                        <a href={site.url} target="_blank">
-                            {site.url}
+                        <h4 className="text-basicwhite hover:underline">
+                            <Link
+                                href={route("sites.details.index", {
+                                    id: site.title,
+                                })}
+                            >
+                                {site.title}
+                            </Link>
+                        </h4>
+                        <a
+                            className="flex items-center space-x-2 hover:underline"
+                            href={site.url}
+                            target="_blank"
+                        >
+                            <span>{site.url}</span>
+                            <ExternalLinkIcon className="w-3 h-3" />
                         </a>
                     </div>
                 </div>
                 <div className="flex flex-col items-start space-y-1">
-                    <h4 className="text-basicwhite">
-                        Goal Events: {site.totalGoalEvents}
-                    </h4>
+                    <h4 className="text-basicwhite">Goal Events: 0</h4>
                     <span>{site.goalId}</span>
                 </div>
                 <div className="flex items-center space-x-2">

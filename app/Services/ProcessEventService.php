@@ -235,7 +235,7 @@ class ProcessEventService
             return $this->connection;
         }
         $this->connection =  new PDO(
-            "mysql:host={$this->site->database_host};dbname={$this->site->database_name}port={$this->site->database_port}",
+            "mysql:host={$this->site->database_host};dbname={$this->site->database_name};port={$this->site->database_port}",
             $this->site->database_user,
             $this->site->database_password
         );

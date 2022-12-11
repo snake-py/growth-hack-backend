@@ -3,6 +3,9 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+
+use App\Models\Site;
+use App\Models\User;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -14,11 +17,22 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // \App\Models\User::factory(10)->create();
+        $user = User::create([
+            'name' => 'test@test.de',
+            'email' => 'test@test.de',
+            'password' => bcrypt('test@test.de'),
+        ]);
 
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
+        Site::create([
+            "title" => "event-testing-docker",
+            "url" => "test.de",
+            "allow_subdomains" => true,
+            "database_name" => "event_tracker",
+            "database_user" => "event_tracker",
+            "database_password" => "EventTracker123!",
+            "database_host" => "growth-hack-backend-event-exampl-db",
+            "database_port" => "3308",
+            "user_id" => $user->id
+        ]);
     }
 }

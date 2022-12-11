@@ -5,7 +5,6 @@ namespace App\Services;
 use App\Models\ProcessedEvent;
 use App\Models\RawEvent;
 use App\Models\Site;
-use Illuminate\Support\Facades\Log;
 use PDO;
 
 class ProcessEventService
@@ -110,7 +109,10 @@ class ProcessEventService
             "CREATE TABLE `{$this->site->database_name}`.`{$tableName}` (id INT NOT NULL AUTO_INCREMENT, PRIMARY KEY (id));"
         );
         $stmt->execute();
+        $this->addMissingTimestamps($tableName, $connection);
         // add columns to table
+        $defaultCols = $this->getDefaultColumns();
+        $columns = array_merge($defaultCols, $columns);
         foreach ($columns as $column) {
             $this->addMissingColumn($column['column_name'], $column['column_type'], $tableName, $connection);
         }
@@ -126,7 +128,42 @@ class ProcessEventService
         $stmt->execute();
     }
 
+    private function addMissingTimestamps($tableName, $connection = null)
+    {
+        $connection = $connection ?? $this->getDBConnection();
+        $stmt = $connection->prepare(
+            "ALTER TABLE `{$this->site->database_name}`.`{$tableName}` ADD COLUMN `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, ADD COLUMN `updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;"
+        );
+        $stmt->execute();
+    }
 
+    private function getDefaultColumns($event = null)
+    {
+        if (!isset($event)) {
+            return [
+                [
+                    'column_name' => 'external_id',
+                    'column_type' => 'bigint',
+                ],
+                [
+                    'column_name' => 'user_agent',
+                    'column_type' => 'longtext',
+                ],
+            ];
+        }
+        return [
+            [
+                'column_name' => 'external_id',
+                'column_type' => 'integer',
+                'value' => $event->id
+            ],
+            [
+                'column_name' => 'user_agent',
+                'column_type' => 'string',
+                'value' => $event->user_agent
+            ],
+        ];
+    }
     private function resolveSchema()
     {
 
@@ -138,7 +175,7 @@ class ProcessEventService
                 'column_type' => self::MYSQL_PRIMITIVE_DATA_MAP[gettype($value)],
             ];
         }
-        return $columns;
+        return  $columns;
     }
 
 
@@ -158,13 +195,19 @@ class ProcessEventService
             "INSERT INTO `{$this->site->database_name}`.`{$tableName}` ($columnsAsString) VALUES ({$columnsAsValues});",
         );
 
+        $defaultCols = $this->getDefaultColumns($this->event);
+
+        foreach ($defaultCols as $column) {
+            $stmt->bindValue(":{$column['column_name']}", $column['value']);
+        }
+
         foreach ($columns as $column) {
             $value = $data[$column['Field']] ?? null;
             $stmt->bindValue(":{$column['Field']}", $value, $this->getPDOType($column['Type']));
         }
-
-        $stmt->execute();
+        $res = $stmt->execute();
         $connection->commit();
+        return true;
     }
 
     protected function getSchema($connection, $tableName = null)
@@ -216,7 +259,12 @@ class ProcessEventService
     {
         $stmt = $connection->query("SHOW COLUMNS FROM `{$this->site->database_name}`.`{$tableName}`;");
         $columns = $stmt->fetchAll(PDO::FETCH_COLUMN);
-        array_shift($columns);
+        $columns =  array_filter(
+            $columns,
+            function ($column) {
+                return !in_array($column, ['id', 'created_at', 'updated_at']);
+            }
+        );
         return [implode(', ', $columns), ':' . implode(', :', $columns)];
     }
 
@@ -224,7 +272,12 @@ class ProcessEventService
     {
         $stmt = $connection->query("SHOW COLUMNS FROM `{$this->site->database_name}`.`{$tableName}`;");
         $columns = $stmt->fetchAll(PDO::FETCH_DEFAULT);
-        array_shift($columns);
+        $columns =  array_filter(
+            $columns,
+            function ($column) {
+                return !in_array($column['Field'], ['id', 'created_at', 'updated_at', 'external_id', 'user_agent']);
+            }
+        );
         return $columns;
     }
 
@@ -277,7 +330,8 @@ class ProcessEventService
      */
     protected function resolveSiteId()
     {
-        $origin = $this->stripSubdomain($this->event->origin);
+        // $origin = $this->stripSubdomain($this->event->origin);
+        $origin = $this->event->origin;
         $site = Site::where('url', $origin)->first();
         if ($site) {
             $this->event->site_id = $site->id;

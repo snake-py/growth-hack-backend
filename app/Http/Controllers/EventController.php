@@ -14,8 +14,10 @@ class EventController extends Controller
     {
         $validated = $request->validated();
         $validated['data'] = json_encode($validated['data']);
+        $validated['origin'] = $validated['site'];
+        $validated['user_agent'] = $request->header('User-Agent');
+        unset($validated['site']);
         $event = new RawEvent($validated);
-        $event->origin = $request->host();
         $event->save();
         ProcessEvent::dispatch($event);
         return response()->json(['message' => 'Event created successfully']);
@@ -26,6 +28,7 @@ class EventController extends Controller
         $validated = $request->validated();
         $validated['data'] = json_encode($validated['data']);
         $validated['origin'] = $validated['site'];
+        $validated['user_agent'] = $request->header('User-Agent');
         unset($validated['site']);
         $event = new RawEvent($validated);
         $event->save();

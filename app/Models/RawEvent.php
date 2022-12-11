@@ -17,6 +17,7 @@ class RawEvent extends Model
         'data',
         'origin',
         'site_id',
+        'user_agent',
     ];
 
     protected $casts = [

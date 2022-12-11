@@ -17,6 +17,7 @@ class CreateEventRequest extends FormRequest
         return [
             'event_name' => 'required|string',
             'data' => 'required|array',
+            'site' => 'required|string',
         ];
     }
 }

@@ -106,12 +106,7 @@ class SiteController extends Controller
         return $site;
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  string  $id
-     * @return \Illuminate\Http\Response
-     */
+   
     public function show(int|string $id)
     {
         if (is_string($id)) {

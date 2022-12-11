@@ -37,6 +37,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/sites/{id}/goals', [GoalController::class, 'create'])->name('sites.details.goals.create');
     Route::get('/sites/{site_title}/goals/{goal_id}', [GoalController::class, 'show'])->name('sites.details.goals.details');
 
+    Route::get('/sites/{id}/settings', [SiteController::class, 'detailsSettings'])->name('sites.details.settings');
 
     // Route::put('/sites/{id}', [SiteController::class, 'update'])->name('sites.update');
     // Route::delete('/sites/{id}', [SiteController::class, 'destroy'])->name('sites.destroy');

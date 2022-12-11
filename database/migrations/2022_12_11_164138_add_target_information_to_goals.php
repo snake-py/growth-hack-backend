@@ -14,7 +14,8 @@ return new class extends Migration
     public function up()
     {
         Schema::table('goals', function (Blueprint $table) {
-            $table->text('description')->nullable();
+            $table->string('target_value_type')->default('monthly');
+            $table->string('target_value')->default('0');
         });
     }
 
@@ -26,7 +27,8 @@ return new class extends Migration
     public function down()
     {
         Schema::table('goals', function (Blueprint $table) {
-            $table->dropColumn('description');
+            $table->dropColumn('target_value_type');
+            $table->dropColumn('target_value');
         });
     }
 };

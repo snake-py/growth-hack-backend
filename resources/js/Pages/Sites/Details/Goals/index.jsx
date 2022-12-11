@@ -71,7 +71,7 @@ export default function Goals({ auth, site, goals }) {
                                     Add Goal
                                 </button>
                             </div>
-                            <GoalTable goals={goals} />
+                            <GoalTable goals={goals} site={site} />
                         </>
                     )}
                 </div>
@@ -80,7 +80,7 @@ export default function Goals({ auth, site, goals }) {
     );
 }
 
-const GoalTable = ({ goals }) => {
+const GoalTable = ({ site, goals }) => {
     return (
         <div className="flex flex-col items-center space-y-4">
             <div className="flex flex-col items-center space-y-4  overflow-scroll max-h-[340px]">
@@ -102,7 +102,17 @@ const GoalTable = ({ goals }) => {
                                     <td className="py-4">{goal.title}</td>
                                     <td className="py-4">{goal.main_event}</td>
                                     <td className="py-4">
-                                        <Link>Open Metrics</Link>
+                                        <Link
+                                            href={route(
+                                                "sites.details.goals.details",
+                                                {
+                                                    site_title: site.title,
+                                                    goal_id: goal.id,
+                                                }
+                                            )}
+                                        >
+                                            Open Metrics
+                                        </Link>
                                     </td>
                                 </tr>
                             ))}
@@ -157,6 +167,24 @@ const InputFields = [
         label: "Description (optional)",
         type: "text",
         placeholder: "Describe your goal...",
+    },
+    {
+        name: "target_value",
+        label: "How many do you want to achieve?",
+        type: "number",
+        placeholder: "100",
+    },
+    {
+        name: "target_value_type",
+        label: "In what Time Frame?",
+        type: "select",
+        options: [
+            { value: "daily", label: "Daily" },
+            { value: "weekly", label: "Weekly" },
+            { value: "monthly", label: "Monthly" },
+            { value: "yearly", label: "Yearly" },
+            { value: "total", label: "Total" },
+        ],
     },
 ];
 
@@ -215,26 +243,52 @@ const GoalForm = ({ site, setShowForm }) => {
                 <div className="grid grid-cols-2 gap-10 mt-8">
                     {InputFields.map((field) => (
                         <div key={field.name}>
-                            <InputLabel
-                                forInput={field.name}
-                                value={field.label}
-                            />
+                            {field.type === "select" ? (
+                                <>
+                                    <InputLabel
+                                        forInput={field.name}
+                                        value={field.label}
+                                    />
+                                    {/* TODO Make select field */}
+                                    <TextInput
+                                        id={field.name}
+                                        name={field.name}
+                                        value={data[field.name]}
+                                        placeholder={field.placeholder}
+                                        type={field.type}
+                                        className="mt-1 block w-full"
+                                        handleChange={onHandleChange}
+                                        required
+                                    />
 
-                            <TextInput
-                                id={field.name}
-                                name={field.name}
-                                value={data[field.name]}
-                                placeholder={field.placeholder}
-                                type={field.type}
-                                className="mt-1 block w-full"
-                                handleChange={onHandleChange}
-                                required
-                            />
+                                    <InputError
+                                        message={errors[field.name]}
+                                        className="mt-2"
+                                    />
+                                </>
+                            ) : (
+                                <>
+                                    <InputLabel
+                                        forInput={field.name}
+                                        value={field.label}
+                                    />
+                                    <TextInput
+                                        id={field.name}
+                                        name={field.name}
+                                        value={data[field.name]}
+                                        placeholder={field.placeholder}
+                                        type={field.type}
+                                        className="mt-1 block w-full"
+                                        handleChange={onHandleChange}
+                                        required
+                                    />
 
-                            <InputError
-                                message={errors[field.name]}
-                                className="mt-2"
-                            />
+                                    <InputError
+                                        message={errors[field.name]}
+                                        className="mt-2"
+                                    />
+                                </>
+                            )}
                         </div>
                     ))}
                 </div>

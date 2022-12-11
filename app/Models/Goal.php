@@ -9,13 +9,23 @@ class Goal extends Model
 {
     use HasFactory;
 
+    public const TARGET_VALUE_TYPES = [
+        'monthly',
+        'yearly',
+        'daily',
+        'weekly',
+        'total'
+    ];
+
     protected $fillable = [
         'title',
         'main_event',
         'positive_related_events',
         'negative_related_events',
         'site_id',
-        'description'
+        'description',
+        'target_value',
+        'target_value_type',
     ];
 
     protected $casts = [

@@ -74,6 +74,8 @@ class SeedEvents extends Seeder
             'positive_related_events' => '["watched_contact_video"]',
             'negative_related_events' => '["skipped_contact_video"]',
             'description' => 'Increase the number of people who got in contact via email',
+            'target_value' => 100,
+            'target_value_type' => 'total',
         ]);
     }
 

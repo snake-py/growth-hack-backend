@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Goal;
 use Illuminate\Foundation\Http\FormRequest;
 
 class CreateGoalRequest extends FormRequest
@@ -21,6 +22,8 @@ class CreateGoalRequest extends FormRequest
             'positive_related_events' => 'nullable|array',
             'negative_related_events' => 'nullable|array',
             'description' => 'nullable|string',
+            'target_value' => 'required|numeric',
+            'target_value_type' => 'required|string|in:' . implode(',', Goal::TARGET_VALUE_TYPES),
         ];
     }
 }

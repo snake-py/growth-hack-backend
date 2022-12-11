@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateGoalRequest;
 use App\Models\Goal;
+use App\Models\RawEvent;
 use App\Models\Site;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class GoalController extends Controller
 {
@@ -50,9 +52,57 @@ class GoalController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(string $site_title, int $goal_id)
     {
-        //
+        $goal = $this->getGoal($site_title, $goal_id);
+        $site = Site::where('user_id', auth()->id())->where('title', $site_title)->get()->first();
+        return Inertia::render(
+            'Sites/Details/Goals/Details',
+            [
+                'site' => $site,
+                'goal' => $goal,
+                'eventData' => $this->getMainEventData($goal, $site),
+            ]
+        );
+    }
+
+    private function getMainEventData($goal, $site)
+    {
+        $mainEvent = $this->getInformationForEvent($goal->main_event, $site);
+
+        $positiveRelatedEvents = [];
+        $negativeRelatedEvents = [];
+        foreach ($this->toArray($goal->positive_related_events) as $key => $event) {
+            $positiveRelatedEvents[] = $this->getInformationForEvent($event, $site);
+        }
+        foreach ($this->toArray($goal->negative_related_events) as $key => $event) {
+            $negativeRelatedEvents[] = $this->getInformationForEvent($event, $site);
+        }
+        $visitors = $this->getInformationForEvent('visit_site', $site);
+        return [
+            'mainEvent' => $mainEvent,
+            'positiveRelatedEvents' => $positiveRelatedEvents,
+            'negativeRelatedEvents' => $negativeRelatedEvents,
+            'visitors' => $visitors,
+        ];
+    }
+
+
+    private function toArray(string $eventString)
+    {
+        return json_decode($eventString, true);
+    }
+
+    private function getInformationForEvent($eventName, $site)
+    {
+        return RawEvent::where('event_name', $eventName)->where('origin', $site->url)->get();
+    }
+
+    public function getGoal(string $site_title, int $goal_id)
+    {
+        $site = Site::where('user_id', auth()->id())->where('title', $site_title)->get()->first();
+        $goal = $site->goals->find($goal_id);
+        return $goal;
     }
 
     /**

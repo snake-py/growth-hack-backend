@@ -35,6 +35,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/sites/{id}/events', [SiteController::class, 'detailsEvents'])->name('sites.details.events');
     Route::get('/sites/{id}/goals', [SiteController::class, 'detailsGoals'])->name('sites.details.goals');
     Route::post('/sites/{id}/goals', [GoalController::class, 'create'])->name('sites.details.goals.create');
+    Route::get('/sites/{site_title}/goals/{goal_id}', [GoalController::class, 'show'])->name('sites.details.goals.details');
 
 
     // Route::put('/sites/{id}', [SiteController::class, 'update'])->name('sites.update');

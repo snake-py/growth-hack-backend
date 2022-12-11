@@ -42,8 +42,14 @@ class SiteController extends Controller
 
     public function details(int|string $id)
     {
+        $startDate = request()->query('startDate');
+        $endDate = request()->query('endDate');
         return Inertia::render('Sites/Details/Index', [
             'site' => $this->show($id),
+            'events' => [
+                // 'event_name_1' => []
+                // 'event_name_2' => []
+            ]
         ]);
     }
 
@@ -63,7 +69,7 @@ class SiteController extends Controller
     public function detailsGoals(int|string $id)
     {
         $site = $this->show($id);
-        return Inertia::render('Sites/Details/Goals', [
+        return Inertia::render('Sites/Details/Goals/index', [
             'site' => $site,
             'goals' => $site->goals,
         ]);

@@ -18,8 +18,9 @@ return new class extends Migration
             $table->foreignId('site_id')->constrained();
             $table->string('title');
             $table->string('main_event');
-            $table->json('positive_related_events');
-            $table->json('negative_related_events');
+            $table->json('positive_related_events')->nullable();
+            $table->json('negative_related_events')->nullable();
+            $table->text('description')->nullable();
             $table->timestamps();
         });
     }

@@ -20,6 +20,8 @@ return new class extends Migration
             $table->json('data');
             $table->foreignId('processed_event_id')->nullable()->constrained();
             $table->foreignId('site_id')->nullable()->constrained();
+            $table->text('user_agent')->nullable();
+            $table->string('status_message')->nullable();
             $table->timestamps();
         });
     }

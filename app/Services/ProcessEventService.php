@@ -69,8 +69,21 @@ class ProcessEventService
         if (!$success) {
             return $this->writeResponse('Event not found', 404);
         }
+        // $this->setEventToProcessed();
+
         return $this->writeResponse('Event processed successfully');
     }
+
+    // protected function setEventToProcessed()
+    // {
+    //     $this->processedEvent->refresh();
+    //     $this->processedEvent->count = $this->processedEvent->count + 1;
+    //     $this->processedEvent->save();
+
+    //     $this->event->refresh();
+    //     $this->event->data = '';
+    //     $this->event->save();
+    // }
 
     protected function pingDB()
     {
@@ -293,10 +306,15 @@ class ProcessEventService
 
     protected function writeResponse($message, $status = 200)
     {
+        $this->event->status_message = $message;
+        $this->event->save();
         if ($this->type === 'test') {
             return response()->json(['message' => $message], $status);
+        } else {
+            if ($status > 400) {
+                throw new \Exception($message);
+            }
         }
-        // need logic to handle errors inside the job
     }
 
     /**

@@ -25,6 +25,7 @@ return new class extends Migration
             $table->text('database_host');
             $table->text('database_port');
             $table->timestamps();
+            $table->unique(['user_id', 'title']);
         });
     }
 

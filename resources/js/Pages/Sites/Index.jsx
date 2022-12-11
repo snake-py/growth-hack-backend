@@ -5,18 +5,18 @@ import { Head, Link } from "@inertiajs/inertia-react";
 import { DotsVerticalIcon } from "@radix-ui/react-icons";
 import { useState } from "react";
 
-const siteList = [
-    {
-        id: 1,
-        name: "nanogiants-test",
-        url: "http://45.83.107.70/",
-        totalGoalEvents: "22k+",
-        goalId: "reach-slider-end",
-        tracking: true,
-    },
-];
+// const siteList = [
+//     {
+//         id: 1,
+//         name: "nanogiants-test",
+//         url: "http://45.83.107.70/",
+//         totalGoalEvents: "22k+",
+//         goalId: "reach-slider-end",
+//         tracking: true,
+//     },
+// ];
 
-export default function Sites({ auth }) {
+export default function Sites({ auth, siteList }) {
     return (
         <AuthenticatedLayout auth={auth}>
             <Head title="Sites" />

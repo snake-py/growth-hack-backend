@@ -58,6 +58,12 @@ class SiteController extends Controller
     }
 
 
+    public function create(CreateSiteRequest $request)
+    {
+        $site = $this->store($request);
+        return redirect()->route('sites.details.index', $site->id);
+    }
+
     /**
      * Store a newly created resource in storage.
      *

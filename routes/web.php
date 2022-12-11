@@ -28,11 +28,11 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/sites', [SiteController::class, 'index'])->name('sites.index');
     Route::get('/sites/new', [SiteController::class, 'new'])->name('sites.new');
-    Route::post('/sites', [SiteController::class, 'store'])->name('sites.store');
+    Route::post('/sites', [SiteController::class, 'create'])->name('sites.store');
     Route::get('/sites/{id}', [SiteController::class, 'details'])->name('sites.details.index');
     Route::get('/sites/{id}/events', [SiteController::class, 'detailsEvents'])->name('sites.details.events');
     Route::get('/sites/{id}/goals', [SiteController::class, 'detailsGaols'])->name('sites.details.goals');
-    
+
     // Route::put('/sites/{id}', [SiteController::class, 'update'])->name('sites.update');
     // Route::delete('/sites/{id}', [SiteController::class, 'destroy'])->name('sites.destroy');
 });

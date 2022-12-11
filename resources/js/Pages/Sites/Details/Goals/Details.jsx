@@ -76,25 +76,36 @@ export default function ({ auth, site, goal, eventData }) {
             <Head title="Goal" />
 
             <div className="max-w-7xl mx-auto h-full py-16 flex flex-col space-y-8">
-                <h2 className="text-basicwhite">{goal.title}</h2>
-                <div className="bg-background border border-border rounded-md p-8 relative d-flex flex-wrap">
+                <Link href={route("sites.details.goals", { id: site.title })}>
+                    <div className="flex items-center space-x-1">
+                        <ArrowLeftIcon className="w-4 h-4" />
+                        <span className="underline">Back</span>
+                    </div>
+                </Link>
+                <h2 className="text-basicwhite">Goal: {goal.title}</h2>
+                <div className="bg-background border border-border rounded-md p-8 relative">
+                    <div className="flex">
+                        <SingleDataCard
+                            width={"1/3"}
+                            title="Total Main Events"
+                            value={eventData.mainEvent.length}
+                        />
+                        <SingleDataCard
+                            width={"1/3"}
+                            title="Total Positive Related Events"
+                            value={calculateTotal(
+                                eventData.positiveRelatedEvents
+                            )}
+                        />
+                        <SingleDataCard
+                            width={"1/3"}
+                            title="Total Negative Related Events"
+                            value={calculateTotal(
+                                eventData.negativeRelatedEvents
+                            )}
+                        />
+                    </div>
                     <PlotDataCard title={"test"}>{/* <Line /> */}</PlotDataCard>
-
-                    <SingleDataCard
-                        width={"1/3"}
-                        title="Total Main Events"
-                        value={eventData.mainEvent.length}
-                    />
-                    <SingleDataCard
-                        width={"1/3"}
-                        title="Total Positive Related Events"
-                        value={calculateTotal(eventData.positiveRelatedEvents)}
-                    />
-                    <SingleDataCard
-                        width={"1/3"}
-                        title="Total Negative Related Events"
-                        value={calculateTotal(eventData.negativeRelatedEvents)}
-                    />
                 </div>
             </div>
         </AuthenticatedLayout>

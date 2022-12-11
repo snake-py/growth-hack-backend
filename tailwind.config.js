@@ -13,8 +13,19 @@ module.exports = {
         extend: {
             fontFamily: {
                 sans: ['Nunito', ...defaultTheme.fontFamily.sans],
+                mono: ['IBM Plex Mono', ...defaultTheme.fontFamily.mono],
             },
+            colors: {
+                'background': '#161618',
+                'foreground': '#19191B',
+                'border': '#343439',
+                'bodytext': '#706F77',
+                'basicwhite': '#EDEDEF',
+                'accent': '#B57FE9'
+
+            }
         },
+
     },
 
     plugins: [require('@tailwindcss/forms')],

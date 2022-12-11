@@ -18,17 +18,8 @@ use Inertia\Inertia;
 */
 
 Route::get('/', function () {
-    return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
+    return redirect()->route('login');
 });
-
-Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -36,9 +27,12 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     Route::get('/sites', [SiteController::class, 'index'])->name('sites.index');
-    Route::get('/sites/create', [SiteController::class, 'create'])->name('sites.create');
+    Route::get('/sites/new', [SiteController::class, 'new'])->name('sites.new');
     Route::post('/sites', [SiteController::class, 'store'])->name('sites.store');
-    Route::get('/sites/{id}', [SiteController::class, 'details'])->name('sites.show');
+    Route::get('/sites/{id}', [SiteController::class, 'details'])->name('sites.details.index');
+    Route::get('/sites/{id}/events', [SiteController::class, 'detailsEvents'])->name('sites.details.events');
+    Route::get('/sites/{id}/goals', [SiteController::class, 'detailsGaols'])->name('sites.details.goals');
+    
     // Route::put('/sites/{id}', [SiteController::class, 'update'])->name('sites.update');
     // Route::delete('/sites/{id}', [SiteController::class, 'destroy'])->name('sites.destroy');
 });

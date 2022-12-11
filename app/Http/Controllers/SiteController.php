@@ -31,14 +31,28 @@ class SiteController extends Controller
     }
 
 
-    public function create()
+    public function new()
     {
-        return Inertia::render('Sites/Create');
+        return Inertia::render('Sites/New');
     }
 
     public function details(int|string $id)
     {
-        return Inertia::render('Sites/Details', [
+        return Inertia::render('Sites/Details/Index', [
+            'site' => $this->show($id),
+        ]);
+    }
+
+    public function detailsEvents(int|string $id)
+    {
+        return Inertia::render('Sites/Details/Events', [
+            'site' => $this->show($id),
+        ]);
+    }
+
+    public function detailsGoals(int|string $id)
+    {
+        return Inertia::render('Sites/Details/Goals', [
             'site' => $this->show($id),
         ]);
     }

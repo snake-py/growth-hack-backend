@@ -1,3 +1,12 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+::selection {
+    @apply bg-accent;
+    @apply text-basicwhite;
+}
+
+#app {
+    height: 100vh;
+}

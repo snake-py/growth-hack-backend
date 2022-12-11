@@ -16,7 +16,9 @@ import { useState } from "react";
 //     },
 // ];
 
-export default function Sites({ auth, siteList }) {
+export default function Sites({ auth, sites }) {
+    const siteList = sites;
+    console.log(siteList);
     return (
         <AuthenticatedLayout auth={auth}>
             <Head title="Sites" />

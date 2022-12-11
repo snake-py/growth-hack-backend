@@ -13,6 +13,7 @@ module.exports = {
         extend: {
             fontFamily: {
                 sans: ['Nunito', ...defaultTheme.fontFamily.sans],
+                mono: ['IBM Plex Mono', ...defaultTheme.fontFamily.mono],
             },
             colors: {
                 'background': '#161618',

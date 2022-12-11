@@ -85,6 +85,15 @@ class SiteController extends Controller
         ]);
     }
 
+    public function detailsSettings(int|string $id)
+    {
+        $site = $this->show($id);
+        return Inertia::render('Sites/Details/Settings', [
+            'site' => $site,
+        ]);
+    }
+
+
 
     public function create(CreateSiteRequest $request)
     {

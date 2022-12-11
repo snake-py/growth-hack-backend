@@ -7,7 +7,7 @@ import { Link } from "@inertiajs/inertia-react";
 import PrimaryButton from "@/Components/PrimaryButton";
 import SecondaryButton from "@/Components/SecondaryButton";
 
-export default function Authenticated({ auth, children, menu }) {
+export default function Authenticated({ auth, children, menu, site }) {
     return (
         <>
             <header className="bg-background sticky top-0  flex items-center border-b border-border">
@@ -18,7 +18,15 @@ export default function Authenticated({ auth, children, menu }) {
                                 <ApplicationLogo className="w-12 h-12" />
                             </Link>
                             <div className="h-px w-8 rotate-[-60deg] bg-border"></div>
-                            <h4>{auth.user.email}</h4>
+                            <h4>
+                                <Link href="/">{auth.user.email}</Link>
+                            </h4>
+                            {site && (
+                                <>
+                                    <div className="h-px w-8 rotate-[-60deg] bg-border"></div>
+                                    {site}
+                                </>
+                            )}
                         </div>
                         <div className="flex items-center space-x-4">
                             <Link href="/sites">Feedback</Link>

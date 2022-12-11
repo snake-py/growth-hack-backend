@@ -64,7 +64,11 @@ export default function ({ auth, site, goal, eventData }) {
                                 Goals
                             </button>
                         </Link>
-                        <Link href="/settings">
+                        <Link
+                            href={route("sites.details.settings", {
+                                id: site.title,
+                            })}
+                        >
                             <button className="py-1 px-4 mb-3 text-bodytext">
                                 Settings
                             </button>
@@ -72,6 +76,7 @@ export default function ({ auth, site, goal, eventData }) {
                     </div>
                 </div>
             }
+            site={site.title}
         >
             <Head title="Goal" />
 

@@ -38,7 +38,11 @@ export default function Detail({ auth, site, events }) {
                                 Goals
                             </button>
                         </Link>
-                        <Link href="/settings">
+                        <Link
+                            href={route("sites.details.settings", {
+                                id: site.title,
+                            })}
+                        >
                             <button className="py-1 px-4 mb-3 text-bodytext">
                                 Settings
                             </button>
@@ -46,6 +50,7 @@ export default function Detail({ auth, site, events }) {
                     </div>
                 </div>
             }
+            site={site.title}
         >
             <Head title="Sites" />
             <div className="max-w-7xl mx-auto h-full py-16">

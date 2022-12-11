@@ -36,7 +36,11 @@ export default function Events({ auth, site, latestRawEvents }) {
                                 Goals
                             </button>
                         </Link>
-                        <Link href="/settings">
+                        <Link
+                            href={route("sites.details.settings", {
+                                id: site.title,
+                            })}
+                        >
                             <button className="py-1 px-4 mb-3 text-bodytext">
                                 Settings
                             </button>
@@ -44,6 +48,7 @@ export default function Events({ auth, site, latestRawEvents }) {
                     </div>
                 </div>
             }
+            site={site.title}
         >
             <Head title="Sites" />
             <div className="max-w-7xl mx-auto h-full py-16 flex flex-col space-y-8">

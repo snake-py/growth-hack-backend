@@ -33,7 +33,10 @@ export default function Edit({ auth, mustVerifyEmail, status }) {
 
     const submit = (e) => {
         e.preventDefault();
-        post(route("sites.create"));
+        post(route("sites.create"), {
+            onSuccess: () => console.log("success"),
+            onError: () => console.log(errors),
+        });
     };
 
     return (

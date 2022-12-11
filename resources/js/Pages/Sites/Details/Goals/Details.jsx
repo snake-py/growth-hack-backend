@@ -29,11 +29,36 @@ const options = {
     responsive: true,
     plugins: {
         legend: {
-            position: "top",
-        },
-        title: {
             display: true,
-            text: "Chart.js Line Chart",
+            labels: {
+                font: {
+                    family: "IBM Plex Mono",
+                },
+            },
+        },
+        tooltip: {
+            titleFont: {
+                family: "IBM Plex Mono",
+            },
+            footerFont: {
+                family: "IBM Plex Mono",
+            },
+            bodyFont: {
+                family: "IBM Plex Mono",
+            },
+        },
+    },
+    font: {
+        family: "IBM Plex Sans",
+    },
+    scales: {
+        x: {
+            display: false,
+        },
+        y: {
+            ticks: {
+                font: { family: "IBM Plex Mono" },
+            },
         },
     },
 };
@@ -211,11 +236,11 @@ export default function ({ auth, site, goal, eventData }) {
                             )}
                         />
                     </div>
-                    {/* <PlotDataCard title={"test"}>
+                    <PlotDataCard title={"test"}>
                         <div className="full-width heigh-[300px]">
                             <Line options={options} data={lineChartData} />
                         </div>
-                    </PlotDataCard> */}
+                    </PlotDataCard>
                 </div>
             </div>
         </AuthenticatedLayout>

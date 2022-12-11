@@ -206,6 +206,8 @@ const GoalForm = ({ site, setShowForm }) => {
         positive_related_events: "",
         negative_related_events: "",
         description: "",
+        target_value_type: "total",
+        target_value: 100,
     });
 
     useEffect(() => {
@@ -215,7 +217,8 @@ const GoalForm = ({ site, setShowForm }) => {
                 "main_event",
                 "positive_related_events",
                 "negative_related_events",
-                "description"
+                "description",
+                "target_value"
             );
         };
     }, []);

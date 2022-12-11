@@ -10,7 +10,7 @@ import SecondaryButton from "@/Components/SecondaryButton";
 export default function Authenticated({ auth, children, menu, site }) {
     return (
         <>
-            <header className="bg-background sticky top-0  flex items-center border-b border-border">
+            <header className="bg-background sticky top-0 z-[1000] flex items-center border-b border-border">
                 <nav className="px-8 flex flex-col w-full">
                     <div className="flex justify-between items-center w-full py-4">
                         <div className="flex items-center space-x-4">

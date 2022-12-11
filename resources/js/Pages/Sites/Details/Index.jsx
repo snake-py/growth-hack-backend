@@ -64,20 +64,6 @@ const prepareData = (events) => {
             },
         ],
     };
-
-    // console.log(data);
-
-    // return {
-    //     labels,
-    //     datasets: [
-    //         {
-    //             label: "Completions",
-    //             data,
-    //             borderWidth: 1,
-    //             backgroundColor: "#B57FE9",
-    //         },
-    //     ],
-    // };
 };
 
 export default function Detail({ auth, site, events }) {
@@ -116,7 +102,7 @@ export default function Detail({ auth, site, events }) {
                                 Goals
                             </button>
                         </Link>
-                        <Link
+                        {/* <Link
                             href={route("sites.details.settings", {
                                 id: site.title,
                             })}
@@ -124,7 +110,7 @@ export default function Detail({ auth, site, events }) {
                             <button className="py-1 px-4 mb-3 text-bodytext">
                                 Settings
                             </button>
-                        </Link>
+                        </Link> */}
                     </div>
                 </div>
             }
@@ -142,23 +128,26 @@ export default function Detail({ auth, site, events }) {
                             <div className="relative z-10 h-[200px] w-[70%]">
                                 <BarChart data={data} />
                             </div>
-                            <div className="w-[30%]">
-                                <table>
+                            <div className="w-[30%] flex items-start justify-end">
+                                <table className="">
                                     <thead>
                                         <tr className="">
-                                            <td>
+                                            <td className="pr-4 pb-[14px]">
                                                 <h4>Total Completions</h4>
-                                            </td>
-                                            <td>
-                                                <h4>Conversion Rate</h4>
                                             </td>
                                         </tr>
                                     </thead>
-                                    <div className="flex items-center justify-end space-x-4"></div>
-                                    <div className="flex items-center justify-end space-x-4">
-                                        <h4>100</h4>
-                                        <h4>20</h4>
-                                    </div>
+                                    <tbody>
+                                        {data.datasets.map((dataset) => {
+                                            return dataset.data.map((value) => (
+                                                <tr>
+                                                    <td className="text-right pr-4 pt-2">
+                                                        <h4>{value}</h4>
+                                                    </td>
+                                                </tr>
+                                            ));
+                                        })}
+                                    </tbody>
                                 </table>
                             </div>
                         </div>
@@ -184,18 +173,6 @@ export default function Detail({ auth, site, events }) {
     );
 }
 
-// {
-//     labels: ["Event 1", "Event 2", "Event 3"],
-//     datasets: [
-//         {
-//             label: "Completions",
-//             data: [12, 19, 3],
-//             borderWidth: 1,
-//             backgroundColor: "#B57FE9",
-//         },
-//     ],
-// }
-
 const BarChart = ({ data }) => {
     return (
         <Bar
@@ -207,7 +184,35 @@ const BarChart = ({ data }) => {
                 responsive: true,
                 aspectRatio: 0,
                 indexAxis: "y",
-
+                plugins: {
+                    legend: {
+                        display: false,
+                    },
+                    tooltip: {
+                        titleFont: {
+                            family: "IBM Plex Mono",
+                        },
+                        footerFont: {
+                            family: "IBM Plex Mono",
+                        },
+                        bodyFont: {
+                            family: "IBM Plex Mono",
+                        },
+                    },
+                },
+                font: {
+                    family: "IBM Plex Sans",
+                },
+                scales: {
+                    x: {
+                        display: false,
+                    },
+                    y: {
+                        ticks: {
+                            font: { family: "IBM Plex Mono" },
+                        },
+                    },
+                },
                 elements: {
                     bar: {
                         borderWidth: 2,

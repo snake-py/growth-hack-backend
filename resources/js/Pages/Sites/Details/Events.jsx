@@ -36,7 +36,7 @@ export default function Events({ auth, site, latestRawEvents }) {
                                 Goals
                             </button>
                         </Link>
-                        <Link
+                        {/* <Link
                             href={route("sites.details.settings", {
                                 id: site.title,
                             })}
@@ -44,7 +44,7 @@ export default function Events({ auth, site, latestRawEvents }) {
                             <button className="py-1 px-4 mb-3 text-bodytext">
                                 Settings
                             </button>
-                        </Link>
+                        </Link> */}
                     </div>
                 </div>
             }
@@ -71,7 +71,7 @@ export default function Events({ auth, site, latestRawEvents }) {
                     <div className="flex flex-col items-center space-y-4  overflow-scroll max-h-[340px]">
                         <table className="table-fixed w-full">
                             <thead>
-                                <tr className="border-b border-border">
+                                <tr className="border-b border-border text-basicwhite">
                                     <td className="pb-4">Id</td>
                                     <td className="pb-4">Event Name</td>
                                     <td className="pb-4">Timestamp</td>
@@ -83,7 +83,7 @@ export default function Events({ auth, site, latestRawEvents }) {
                                     {latestRawEvents.map((event, index) => (
                                         <tr
                                             key={event.id}
-                                            className="border-b border-border"
+                                            className="border-b border-border "
                                         >
                                             <td className="py-4">{event.id}</td>
                                             <td className="py-4">

@@ -43,7 +43,7 @@ export default function Goals({ auth, site, goals }) {
                                 Goals
                             </button>
                         </Link>
-                        <Link
+                        {/* <Link
                             href={route("sites.details.settings", {
                                 id: site.title,
                             })}
@@ -51,7 +51,7 @@ export default function Goals({ auth, site, goals }) {
                             <button className="py-1 px-4 mb-3 text-bodytext">
                                 Settings
                             </button>
-                        </Link>
+                        </Link> */}
                     </div>
                 </div>
             }
@@ -60,22 +60,24 @@ export default function Goals({ auth, site, goals }) {
             <Head title="Goals" />
 
             <div className="max-w-7xl mx-auto h-full py-16 flex flex-col space-y-8">
-                <h2 className="text-basicwhite">Live Event View</h2>
-                <div className="bg-background border border-border rounded-md p-8 relative">
+                <div className="flex justify-between items-center">
+                    <h2 className="text-basicwhite">All Goals</h2>
+                    <div className="flex justify-end">
+                        <button
+                            onClick={() => {
+                                setShowForm(true);
+                            }}
+                            className="inline-flex items-center px-8 h-[36px] bg-background border border-border rounded-md font-semibold text-sm text-bodytext hover:border-basicwhite hover:text-basicwhite focus:bg-none active:bg-gray-900 focus:outline-none focus:ring-0 transition ease-in-out duration-150 undefined "
+                        >
+                            Add Goal
+                        </button>
+                    </div>
+                </div>
+                <div className="relative">
                     {showForm ? (
                         <GoalForm site={site} setShowForm={setShowForm} />
                     ) : (
                         <>
-                            <div className="mb-10">
-                                <button
-                                    onClick={() => {
-                                        setShowForm(true);
-                                    }}
-                                    className="inline-flex items-center px-8 h-[36px] bg-background border border-border rounded-md font-semibold text-sm text-bodytext hover:border-basicwhite hover:text-basicwhite focus:bg-none active:bg-gray-900 focus:outline-none focus:ring-0 transition ease-in-out duration-150 undefined "
-                                >
-                                    Add Goal
-                                </button>
-                            </div>
                             <GoalTable goals={goals} site={site} />
                         </>
                     )}
@@ -87,56 +89,60 @@ export default function Goals({ auth, site, goals }) {
 
 const GoalTable = ({ site, goals }) => {
     return (
-        <div className="flex flex-col items-center space-y-4">
-            <div className="flex flex-col items-center space-y-4  overflow-scroll max-h-[340px]">
-                <table className="table-fixed w-full">
-                    <thead>
-                        <tr className="border-b border-border">
-                            <td className="pb-4">Title</td>
-                            <td className="pb-4">Main Event</td>
-                            <td className="pb-4">Metrics</td>
-                        </tr>
-                    </thead>
-                    {goals.length > 0 ? (
-                        <tbody>
-                            {goals.map((goal, index) => (
-                                <tr
-                                    key={goal.id}
-                                    className="border-b border-border"
-                                >
-                                    <td className="py-4">{goal.title}</td>
-                                    <td className="py-4">{goal.main_event}</td>
-                                    <td className="py-4">
-                                        <Link
-                                            href={route(
-                                                "sites.details.goals.details",
-                                                {
-                                                    site_title: site.title,
-                                                    goal_id: goal.id,
-                                                }
-                                            )}
-                                        >
-                                            Open Metrics
-                                        </Link>
-                                    </td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    ) : (
-                        <tbody>
-                            {Array.from({ length: 10 }).map((_, index) => (
-                                <tr
-                                    key={index}
-                                    className="border-b border-border"
-                                >
-                                    <td className="py-4">Title</td>
-                                    <td className="py-4">Main Event</td>
-                                    <td className="py-4">Open Metrics</td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    )}
-                </table>
+        <div className="bg-background border border-border rounded-md p-8 ">
+            <div className="flex flex-col items-center space-y-4">
+                <div className="flex flex-col items-center space-y-4  overflow-scroll max-h-[340px]">
+                    <table className="table-fixed w-full">
+                        <thead>
+                            <tr className="border-b border-border">
+                                <td className="pb-4">Title</td>
+                                <td className="pb-4">Main Event</td>
+                                <td className="pb-4">Metrics</td>
+                            </tr>
+                        </thead>
+                        {goals.length > 0 ? (
+                            <tbody>
+                                {goals.map((goal, index) => (
+                                    <tr
+                                        key={goal.id}
+                                        className="border-b border-border"
+                                    >
+                                        <td className="py-4">{goal.title}</td>
+                                        <td className="py-4">
+                                            {goal.main_event}
+                                        </td>
+                                        <td className="py-4 underline text-basicwhite">
+                                            <Link
+                                                href={route(
+                                                    "sites.details.goals.details",
+                                                    {
+                                                        site_title: site.title,
+                                                        goal_id: goal.id,
+                                                    }
+                                                )}
+                                            >
+                                                Open Metrics
+                                            </Link>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        ) : (
+                            <tbody>
+                                {Array.from({ length: 10 }).map((_, index) => (
+                                    <tr
+                                        key={index}
+                                        className="border-b border-border"
+                                    >
+                                        <td className="py-4">Title</td>
+                                        <td className="py-4">Main Event</td>
+                                        <td className="py-4">Open Metrics</td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        )}
+                    </table>
+                </div>
             </div>
         </div>
     );
@@ -179,18 +185,18 @@ const InputFields = [
         type: "number",
         placeholder: "100",
     },
-    {
-        name: "target_value_type",
-        label: "In what Time Frame?",
-        type: "select",
-        options: [
-            { value: "daily", label: "Daily" },
-            { value: "weekly", label: "Weekly" },
-            { value: "monthly", label: "Monthly" },
-            { value: "yearly", label: "Yearly" },
-            { value: "total", label: "Total" },
-        ],
-    },
+    // {
+    //     name: "target_value_type",
+    //     label: "In what Time Frame?",
+    //     type: "select",
+    //     options: [
+    //         { value: "daily", label: "Daily" },
+    //         { value: "weekly", label: "Weekly" },
+    //         { value: "monthly", label: "Monthly" },
+    //         { value: "yearly", label: "Yearly" },
+    //         { value: "total", label: "Total" },
+    //     ],
+    // },
 ];
 
 const GoalForm = ({ site, setShowForm }) => {
@@ -232,20 +238,9 @@ const GoalForm = ({ site, setShowForm }) => {
     };
 
     return (
-        <div className="bg-background border border-border rounded-md p-8 mt-8">
+        <div className="max-w-3xl mx-auto bg-background border border-border rounded-md p-8">
             <form onSubmit={submit}>
-                {/* <InputLabel forInput="title" value="Site Title" />
-                <TextInput
-                    id="title"
-                    name="title"
-                    value={data.title}
-                    placeholder={"my-cool-site"}
-                    className="mt-1 block w-full"
-                    handleChange={onHandleChange}
-                    required
-                />
-                <InputError message={errors.title} className="mt-2" /> */}
-                <div className="grid grid-cols-2 gap-10 mt-8">
+                <div className="grid grid-cols-2 gap-10">
                     {InputFields.map((field) => (
                         <div key={field.name}>
                             {field.type === "select" ? (

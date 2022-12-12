@@ -19,11 +19,11 @@ class CreateGoalRequest extends FormRequest
         return [
             'title' => 'required|string:255',
             'main_event' => 'required|string',
-            'positive_related_events' => 'nullable|array',
-            'negative_related_events' => 'nullable|array',
+            'positive_related_events' => 'nullable|string',
+            'negative_related_events' => 'nullable|string',
             'description' => 'nullable|string',
-            'target_value' => 'required|numeric',
-            'target_value_type' => 'required|string|in:' . implode(',', Goal::TARGET_VALUE_TYPES),
+            'target_value' => 'nullable|numeric',
+            'target_value_type' => 'nullable|string|in:' . implode(',', Goal::TARGET_VALUE_TYPES),
         ];
     }
 }

@@ -27,7 +27,7 @@ class GoalController extends Controller
     {
         $site = Site::where('user_id', auth()->id())->findOrFail($request->id);
         $goal = $this->store($request, $site);
-        return redirect()->route('sites.details.goals', $site->title);
+        return redirect()->route('sites.details.goals', ['id' => $site->title]);
     }
 
     /**

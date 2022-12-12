@@ -179,12 +179,12 @@ const InputFields = [
         type: "text",
         placeholder: "Describe your goal...",
     },
-    {
-        name: "target_value",
-        label: "How many do you want to achieve?",
-        type: "number",
-        placeholder: "100",
-    },
+    // {
+    //     name: "target_value",
+    //     label: "How many do you want to achieve?",
+    //     type: "number",
+    //     placeholder: "100",
+    // },
     // {
     //     name: "target_value_type",
     //     label: "In what Time Frame?",
@@ -206,8 +206,8 @@ const GoalForm = ({ site, setShowForm }) => {
         positive_related_events: "",
         negative_related_events: "",
         description: "",
-        target_value_type: "total",
-        target_value: 100,
+        // target_value_type: "total",
+        // target_value: 100,
     });
 
     useEffect(() => {
@@ -217,8 +217,8 @@ const GoalForm = ({ site, setShowForm }) => {
                 "main_event",
                 "positive_related_events",
                 "negative_related_events",
-                "description",
-                "target_value"
+                "description"
+                // "target_value"
             );
         };
     }, []);
@@ -235,7 +235,7 @@ const GoalForm = ({ site, setShowForm }) => {
     const submit = (e) => {
         e.preventDefault();
         post(route("sites.details.goals.create", { id: site.id }), {
-            onSuccess: () => console.log("success"),
+            onSuccess: () => setShowForm(false),
             onError: () => console.log(errors),
         });
     };
